@@ -9,6 +9,7 @@ package util
 import (
 	"errors"
 	"fmt"
+	"math/rand"
 	"sync"
 	"time"
 )
@@ -86,4 +87,10 @@ func (id *IdWorker) NextId() (uint32, error) {
 	}
 	id.lastTimestamp = timestamp
 	return (uint32(timestamp-id.snsEpoch) << timestampLeftShift) | (id.datacenterId << datacenterIdShift) | (id.workerId << workerIdShift) | id.sequence, nil
+}
+
+// NextId get by rand.
+func (id *IdWorker) NextIdByRand() int32 {
+	rand.Seed(time.Now().UnixNano())
+	return rand.Int31n(20)
 }
