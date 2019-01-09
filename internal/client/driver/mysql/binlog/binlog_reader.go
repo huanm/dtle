@@ -100,9 +100,13 @@ func NewMySQLReader(cfg *config.MySQLDriverConfig, logger *log.Entry, replicateD
 	if err != nil {
 		return nil, err
 	}
-	sid := id.NextIdByRand()
+	sid, err := id.NextId()
+	if err != nil {
+		return nil, err
+	}
 	bid := []byte(strconv.FormatUint(uint64(sid), 10))
 	serverId, err := strconv.ParseUint(string(bid), 10, 32)
+	logger.Debug("job.start: debug server id is :", serverId)
 	if err != nil {
 		return nil, err
 	}
